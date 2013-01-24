@@ -1,0 +1,43 @@
+/* Global */
+body { font-family: Helvetica, "Segoe UI", "宋体"; font-size: small !important;}
+.hla { background-color: white !important; }
+.list li { padding: 5px 3px 5px 3px !important; }
+.list li div:first-child { margin-bottom: 2px; }
+.list li div:last-child { font-size: small !important; color: #555 !important; }
+.list li div:last-child a { text-decoration:underline; }
+a { color: #333 !important; }
+a.top { color: crimson !important; }
+a:hover { color: #0064AF !important; }
+a:visited { color: coral !important; }
+#favor { display: none; position: absolute; width: 500px; top:100px; left: 10px; background-color: white;  padding: 10px; box-shadow: 2px 2px 5px #555; border:1px solid #ddd }
+#favor ul { overflow:hidden; }
+#favor ul li { float:left;}
+#favor ul li:hover { background-color: #ddd }
+div.loading { opacity: .5 }
+span.tip { display: none; margin-left: 4px; color:white}
+div.loading span.tip { display: inline; }
+
+a.page_last { float:right; }
+a.page { padding-left: 1px; padding-right: 1px;}
+span.plant { padding-left: 2px; padding-right:1px;}
+#bigpage div#wraper {float:left; width: 40%;overflow-y: hidden;}
+#bigpage div#wraper2 {overflow-y: hidden;}
+#bigpage { overflow-y: hidden; }
+
+#wraper div.header { background-color: rgb(233,131,0)}
+#wraper2 div.header { background-color: rgb(242,182,0)}
+div.header { padding: 2px; margin-bottom:1px}
+div.contents { overflow-y: auto; display:none;}
+a.close { float:left; margin-right: 4px; }
+a.close:link { color: #efefef !important }
+a.close:hover { color: crimson !important; }
+a.close_all { float:right; margin-right: 4px; }
+a.close_all:link { color: #efefef !important }
+a.close_all:hover { color: crimson !important; }
+span.page_num { float:right; margin-right:4px; background-color:white; min-width:20px;text-align:center; padding:0px 2px; }
+a.toggle:link { color:white !important  }
+a.toggle:hover { color: rgb(205,0,60) !important; }
+span.comment { font-size: small; color:gray }
+span.bodytext { font-size: small; color: black; line-height: 20px;}
+div.comments { max-height: 50px; overflow-y:auto; }
+span.cur_page { font-weight: bold; text-decoration:underline;padding:0px 1px; }

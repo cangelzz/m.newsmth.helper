@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+
+  "name": "m.newsmth.helper",
+  "description": "newsmth mobile site helper",
+  "version": "1.0",
+  "icons": { "128": "icon.png" },
+  "homepage_url": "https://github.com/cangelzz/m.newsmth.helper",
+  "permissions": [
+    "http://m.newsmth.net/"
+  ],
+  "content_scripts": [
+    {
+       "matches": ["http://m.newsmth.net/*"],
+       "js": ["jquery.js", "remove_baidu.js"],
+       "css": ["my.css"],
+       "run_at": "document_start"
+    },
+    {
+       "matches": ["http://m.newsmth.net/*"],
+       "js": ["jquery.js", "main.js"],
+       "css": ["my.css"],
+       "run_at": "document_end"
+    }
+  ]
+}
