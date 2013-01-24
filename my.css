@@ -3,7 +3,7 @@ body { font-family: Helvetica, "Segoe UI", "宋体"; font-size: small !important
 .hla { background-color: white !important; }
 .list li { padding: 5px 3px 5px 3px !important; }
 .list li div:first-child { margin-bottom: 2px; }
-.list li div:last-child { font-size: small !important; color: #555 !important; }
+#wraper .list li div:last-child { font-size: small !important; color: #555 !important; opacity: .6 }
 .list li div:last-child a { text-decoration:underline; }
 a { color: #333 !important; }
 a.top { color: crimson !important; }
@@ -35,10 +35,10 @@ div.contents { overflow-y: auto; display:none;
 a.close { float:left; margin-right: 4px; }
 a.close:link { color: #efefef !important }
 a.close:hover { color: crimson !important; }
-a.close_all { margin-right: 4px; }
-a.close_all:link { color: #efefef !important }
+a.close_all { margin: 0px 2px; }
+a.close_all:link { color: white !important }
 a.close_all:hover { color: crimson !important; }
-div.tools { float:right; }
+div.tools { float:right; padding: 2px; color: white; }
 a.page_num { float:right; margin-right:4px; background-color:white; min-width:20px;text-align:center; padding:0px 2px; }
 a.toggle:link { color:white !important  }
 a.toggle:hover { color: rgb(205,0,60) !important; }

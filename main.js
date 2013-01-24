@@ -245,7 +245,7 @@ function loadBoardInDiv(a) {
 	var link = a.attr("href");
 	var board = link.match(/\/board\/(\w+)/)[1];
 	var page_num = link.match(/\/board\/\w+\?p=(\d+)/)[1];
-	if (page_num == undefined) page_num = "最新";
+	if (page_num == undefined || page_num == "1") page_num = "最新";
 	var head = a.parents("div.contents").addClass("loading").prev().addClass("loading")
 		.data("link", link);
 	$.ajax({ url: link, context: head,
