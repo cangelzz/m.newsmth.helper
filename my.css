@@ -27,14 +27,19 @@ span.plant { padding-left: 2px; padding-right:1px;}
 #wraper div.header { background-color: rgb(233,131,0)}
 #wraper2 div.header { background-color: rgb(242,182,0)}
 div.header { padding: 2px; margin-bottom:1px}
-div.contents { overflow-y: auto; display:none;}
+div.contents { overflow-y: auto; display:none;
+}
+
+.contents::-webkit-scrollbar { width: 0px; }
+
 a.close { float:left; margin-right: 4px; }
 a.close:link { color: #efefef !important }
 a.close:hover { color: crimson !important; }
-a.close_all { float:right; margin-right: 4px; }
+a.close_all { margin-right: 4px; }
 a.close_all:link { color: #efefef !important }
 a.close_all:hover { color: crimson !important; }
-span.page_num { float:right; margin-right:4px; background-color:white; min-width:20px;text-align:center; padding:0px 2px; }
+div.tools { float:right; }
+a.page_num { float:right; margin-right:4px; background-color:white; min-width:20px;text-align:center; padding:0px 2px; }
 a.toggle:link { color:white !important  }
 a.toggle:hover { color: rgb(205,0,60) !important; }
 span.comment { font-size: small; color:gray }
