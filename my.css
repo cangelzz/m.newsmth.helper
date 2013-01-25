@@ -46,3 +46,7 @@ span.comment { font-size: small; color:gray }
 span.bodytext { font-size: small; color: black; line-height: 20px;}
 div.comments { max-height: 50px; overflow-y:auto; }
 span.cur_page { font-weight: bold; text-decoration:underline;padding:0px 1px; }
+
+.list li .nav { overflow: hidden; }
+.list li .nav > div:first-child { float:left; }
+.list li .nav > div:last-child { float:right; }

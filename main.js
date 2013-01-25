@@ -54,12 +54,18 @@ $.fn.extend({
 	// TODO: rewrite to replace only the post links, not action links
 	replace_article_a: function() {
 		return $(this).find("a[href^='/article']").each(function(){
-			$(this).attr("href", "#" + $(this).attr("href")) 
+			var href = $(this).attr("href");
+			if (href.match(P_ARTICLE))
+				$(this).attr("href", "#" + $(this).attr("href"));
 		}).end();
+	},
+	// remove just to section div
+	remove_jump_section: function() {
+		return $(this).find("div.sec.sp").remove().end();
 	},
 	// single method for handle posts
 	format_posts: function() {
-		return $(this).children("div#m_main").handle_comment().create_pages_for_posts().replace_article_a();
+		return $(this).children("div#m_main").remove_jump_section().handle_comment().create_pages_for_posts().replace_article_a();
 	},
 	// hide top subjects
 	hide_top: function() {
@@ -68,7 +74,7 @@ $.fn.extend({
 	},
 	// single method for handle subjects
 	format_subjects: function() {
-		return $(this).update_nav().find("div#m_main").create_pages_for_subjects().replace_article_a().hide_top();
+		return $(this).update_nav().find("div#m_main").remove_jump_section().create_pages_for_subjects().replace_article_a().hide_top();
 	},
 	// update navigation area
 	// TODO: add to posts loading, auto update, send desktop notification
@@ -105,7 +111,12 @@ $.fn.extend({
 
 var PAGE_MAX = 9999;
 var ROW_HEIGHT = 23;
-var P_ARTICLE = /#?\/(article|mail|refer)/; // loadable article pattern in wraper2
+var P_LOAD_ARTICLE = /#?\/(article|mail|refer)/;
+var P_ARTICLE = /\/article\/\w+\/\d+/; // loadable article pattern in wraper2
+var P_ARTICLE_ACTION = /\/(article|mail)\/\w+\/(post|send|forward)/;
+var P_LOAD_BOARD_IN_DIV = /\/board/;
+var P_LOAD_SPEC_IN_DIV = /\/(refer\/at|refer\/reply\/$|mail\/inbox\/$|mail\/outbox\/$|mail\/deleted\/$)/;
+var P_LOAD_SPEC = //;
 
 // start from this, logged in
 // create new wraper frame
@@ -180,7 +191,7 @@ function createpages(base, total) {
 }
 
 function createpages_posts(base, cur, total) {
-	var link = "<a class='plant'>|</a>";
+	var link = "<span class='plant'>|</span>";
 	for (var i = 1; i <= total; i++) {
 		if (i == cur) {
 			link = link + "<span class='cur_page'>" + i + "</span>";
@@ -211,6 +222,22 @@ function loadSpecial(a) {
 	$("#wraper").reset_maxheight();
 	$.ajax({ url: link, context: head,
 		success: function(result){
+			$(this).removeClass("loading")
+				.next().empty().append($(result).format_subjects()).removeClass("loading").check_to_expand();
+		}
+	});
+}
+
+function loadSpecialInDiv(a) {
+	//debugger;
+	var link = a.attr("href");
+	var board = link.match(/\/(\w+)?/)[1];
+	if (board == undefined) board = "首页";
+	var board_text = a.text();
+	var head = $(a).parents("div.contents").addClass("loading").prev().addClass("loading");
+	$.ajax({ url: link, context: head,
+		success: function(result){
+			head.children("a.toggle").text(board_text);
 			$(this).removeClass("loading")
 				.next().empty().append($(result).format_subjects()).removeClass("loading").check_to_expand();
 		}
@@ -386,18 +413,28 @@ $("#favor a").live("click", function(e){
 $("#wraper a").live("click", function(e){
 	e.preventDefault();
 	var href = $(this).attr("href");
-	if (href.match(/\/board/)) {
+	if (href.match(P_LOAD_BOARD_IN_DIV)) {
 		return loadBoardInDiv($(this));
 	}
-	if (href.match(/#\/article/)) return loadArticle($(this));
-	if (href.match(P_ARTICLE)) return loadArticle($(this));
+	if (href.match(P_LOAD_SPEC_IN_DIV)) {
+		return loadSpecialInDiv($(this));
+	}
+
+	//if (href.match(/#\/article/)) return loadArticle($(this));
+	if (href.match(P_LOAD_ARTICLE)) return loadArticle($(this));
 });
 
 $("#wraper2 a").live("click", function(e){
-	e.preventDefault();
+	e.stopPropagation();
 	var href = $(this).attr("href");
 	if (href.match(/\/board/)) loadBoard($(this));
 	if (href.match(/#\/article/)) loadArticleInDiv($(this));
+	if (href.match(P_ARTICLE_ACTION)) {
+		$(this).attr("target", "_blank");
+		return true;
+	}
+	e.preventDefault();
+
 });
 
 } // big function end
