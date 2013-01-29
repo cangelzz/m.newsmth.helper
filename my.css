@@ -49,4 +49,7 @@ span.cur_page { font-weight: bold; text-decoration:underline;padding:0px 1px; }
 
 .list li .nav { overflow: hidden; }
 .list li .nav > div:first-child { float:left; }
+.list li .nav > div:first-child > a { margin: 0px 4px; }
+.list li .nav > div:first-child > a:nth-child(2) { font-weight:bold; }
+.list li .nav > div:first-child > a:nth-child(3) { opacity: 0.5; }
 .list li .nav > div:last-child { float:right; }

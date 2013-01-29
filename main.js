@@ -76,6 +76,9 @@ $.fn.extend({
 	format_subjects: function() {
 		return $(this).update_nav().find("div#m_main").remove_jump_section().create_pages_for_subjects().replace_article_a().hide_top();
 	},
+	format_specials: function() {
+		return $(this).update_nav().find("div#m_main").remove_jump_section().create_pages_for_subjects().replace_article_a();
+	},
 	// update navigation area
 	// TODO: add to posts loading, auto update, send desktop notification
 	update_nav: function() {
@@ -94,7 +97,7 @@ $.fn.extend({
 		// remove useless nodes
 		return $(this).children(":not('#m_main')").remove().end()
 			.wrapInner("<div class='contents expanded' style='display:block'></div>")
-			.prepend("<div class='header'><a class='close' href='javascript:void(0)'>Close</a><a class='toggle' href='javascript:void(0)'>首页</a></div>")
+			.prepend("<div class='header'><a class='close' href='javascript:void(0)'>关闭</a><a class='toggle' href='javascript:void(0)'>首页</a></div>")
 			.addClass("container");
 	},
 	// reset max height for container
@@ -115,7 +118,7 @@ var P_LOAD_ARTICLE = /#?\/(article|mail|refer)/;
 var P_ARTICLE = /\/article\/\w+\/\d+/; // loadable article pattern in wraper2
 var P_ARTICLE_ACTION = /\/(article|mail)\/\w+\/(post|send|forward)/;
 var P_LOAD_BOARD_IN_DIV = /\/board/;
-var P_LOAD_SPEC_IN_DIV = /\/(refer\/at|refer\/reply\/$|mail\/inbox\/$|mail\/outbox\/$|mail\/deleted\/$)/;
+var P_LOAD_SPEC_IN_DIV = /\/(refer\/at|refer\/reply\/$|mail\/inbox\/$|mail\/outbox\/$|mail\/deleted\/$|hot\/)/;
 var P_LOAD_SPEC = //;
 
 // start from this, logged in
@@ -176,8 +179,14 @@ $(window).resize(resize);
 
 //get favor list
 $.ajax({url: "/favor", 
-success: function(result){ $("#favor").empty(); $(result).find("div#m_main ul").children("li").each(function(){ $(this).html($(this).children()); }).end().removeClass("slist").removeClass("sec")
-.appendTo($("#favor")); }
+	success: function(result){
+		$("#favor").empty(); 
+		$(result).find("div#m_main ul").children("li").each(function(){ 
+			$(this).html($(this).children());
+		}).end().removeClass("slist").removeClass("sec")
+		.appendTo($("#favor"));
+		$("#favor").append("<label>multi-selection</label><input type='checkbox' checked='false'/>");
+	}
 });
 
 function createpages(base, total) {
@@ -214,7 +223,7 @@ function loadSpecial(a) {
 	var board_text = a.text();
 	var head = $("<div class='header loading'></div>")
 		.attr("board", board)
-		.append("<a class='close' href='javascript:void(0)'>Close</a>")
+		.append("<a class='close' href='javascript:void(0)'>关闭</a>")
 		.append("<a class='toggle' href='javascript:void(0)'>" + board_text + "</a>")
 		.append("<span class='tip'> ...</span>")
 		.appendTo($("#wraper"))
@@ -223,7 +232,7 @@ function loadSpecial(a) {
 	$.ajax({ url: link, context: head,
 		success: function(result){
 			$(this).removeClass("loading")
-				.next().empty().append($(result).format_subjects()).removeClass("loading").check_to_expand();
+				.next().empty().append($(result).format_specials()).removeClass("loading").check_to_expand();
 		}
 	});
 }
@@ -239,7 +248,7 @@ function loadSpecialInDiv(a) {
 		success: function(result){
 			head.children("a.toggle").text(board_text);
 			$(this).removeClass("loading")
-				.next().empty().append($(result).format_subjects()).removeClass("loading").check_to_expand();
+				.next().empty().append($(result).format_specials()).removeClass("loading").check_to_expand();
 		}
 	});
 }
@@ -253,7 +262,7 @@ function loadBoard(a) {
 	var head = $("<div class='header loading'></div>")
 		.attr("board", board)
 		.data("link", link)
-		.append("<a class='close' href='javascript:void(0)'>Close</a>")
+		.append("<a class='close' href='javascript:void(0)'>关闭</a>")
 		.append("<a class='toggle' href='javascript:void(0)'>" + board_text + "</a>")
 		.append("<span class='tip'> ...</span>")
 		.append("<a class='page_num' href='javascript:void(0)'>" + page_num + "</a>")
@@ -320,7 +329,7 @@ function loadArticle(a) {
 		//div header
 		.children(":last")
 		.data("link", link)
-		.append("<a class='close' href='javascript:void(0)'>Close</a>")
+		.append("<a class='close' href='javascript:void(0)'>关闭</a>")
 		.append("<a class='page_num' href='javascript:void(0)'>" + page_num + "</a>")
 		.after("<div class='contents'></div>");
 	$("#wraper2").reset_maxheight();
@@ -405,7 +414,7 @@ $("#favor a").live("click", function(e){
 	e.preventDefault();
 	var href = $(this).attr("href");
 	if (href.match(/\/board/)) {
-		$("#favor").hide();
+		if ($("#favor input:checked").length == 0) $("#favor").hide();
 		loadBoard($(this));
 	}
 });
