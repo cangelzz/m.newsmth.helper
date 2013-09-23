@@ -15,7 +15,7 @@ $.fn.extend({
 					}
 					// remove empty lines
 					if (!t) { 
-						return null 
+						return null;
 					};
 					// non comment becomes bodytext
 					return "<span class='bodytext'>" + t + "</span>";
@@ -42,12 +42,21 @@ $.fn.extend({
 	},
 	// create page number links for posts
 	create_pages_for_posts: function() {
-		var base = $(this).find(".sec.nav form").attr("action");
+		var form = $(this).find(".sec.nav form");
+		var base = form.attr("action");
+		var a = form.children("a:first");
+		var extra = "";
+		if (a.attr("href") != undefined) {
+			var m = a.attr("href").match(/au=\w+/);
+			if (m != null) extra = m[0];
+		}
+		//debugger;
+		
 		var pageitem = $(this).find(".sec.nav form a.plant").first().text();
 		var pages = pageitem.split("/");
 		var cur = pages[0];
 		var total = pages[1];
-		$(createpages_posts(base, cur, total)).appendTo($(this).find(".sec.nav form"));
+		$(createpages_posts(base, cur, total, extra)).appendTo($(this).find(".sec.nav form"));
 		return $(this);
 	},
 	// replace hyperlinks to hash links
@@ -119,7 +128,8 @@ var P_ARTICLE = /\/article\/\w+\/\d+/; // loadable article pattern in wraper2
 var P_ARTICLE_ACTION = /\/(article|mail)\/\w+\/(post|send|forward)/;
 var P_LOAD_BOARD_IN_DIV = /\/board/;
 var P_LOAD_SPEC_IN_DIV = /\/(refer\/at|refer\/reply\/$|mail\/inbox\/$|mail\/outbox\/$|mail\/deleted\/$|hot\/)/;
-var P_LOAD_SPEC = //;
+//var P_LOAD_SPEC = //;
+var recent_closed = [];
 
 // start from this, logged in
 // create new wraper frame
@@ -160,7 +170,9 @@ function updateLatest() {
 
 $("div#bigpage").after("<div id='favor'>Loading ...</div>")
 .prepend("<div class='tools'></div>").find("div.tools")
-.append("<label>定时更新</label><input id='time_update' type='checkbox' name='time_update' />")
+.append("<div class='recent_div'><a href='javascript:void(0)' id='recent'>最近关闭</a><ul></ul></div> ")
+.append("<label>打开版面</label><input type='text' id='jumpboard' /> ")
+.append("<label>定时更新</label><input id='time_update' type='checkbox' name='time_update' /> ")
 .append("<a class='close_all' href='javascript:void(0)' container='#wraper2'>关闭所有帖子</a><a class='close_all' href='javascript:void(0)' container='#wraper'>关闭所有版面</a>");
 
 $("#time_update").change(function(){
@@ -169,6 +181,12 @@ $("#time_update").change(function(){
 	}
 	else {
 		clearInterval(time_update);
+	}
+});
+
+$("#jumpboard").keypress(function(event){
+	if (event.keyCode == '13') {
+		loadBoard($("<a href='http://m.newsmth.net/board/"+ $(this).val() +"'>"+ $(this).val() +"</a>"));
 	}
 });
 
@@ -199,18 +217,19 @@ function createpages(base, total) {
 	return link;
 }
 
-function createpages_posts(base, cur, total) {
+function createpages_posts(base, cur, total, extra) {
+	if (extra == undefined) extra = "";
 	var link = "<span class='plant'>|</span>";
 	for (var i = 1; i <= total; i++) {
 		if (i == cur) {
 			link = link + "<span class='cur_page'>" + i + "</span>";
 		}
 		else {
-			link = link + "<a class='page' href='"+ base + "?p=" + i +"'>"+ i +"</a>";
+			link = link + "<a class='page' href='" + base + "?p=" + i + "&" + extra + "'>" + i +"</a>";
 		}
 	}
 	
-	link = link + "<a class='page page_last' href='"+ base + "?p=" + PAGE_MAX +"'>"+ "尾页" +"</a>";
+	link = link + "<a class='page page_last' href='" + base + "?p=" + PAGE_MAX + "&" + extra + "'>" + "尾页" +"</a>";
 	
 	return link;
 }
@@ -329,6 +348,7 @@ function loadArticle(a) {
 		//div header
 		.children(":last")
 		.data("link", link)
+		.data("a", a.clone())
 		.append("<a class='close' href='javascript:void(0)'>关闭</a>")
 		.append("<a class='page_num' href='javascript:void(0)'>" + page_num + "</a>")
 		.after("<div class='contents'></div>");
@@ -380,6 +400,20 @@ $("div.header").live("toggle", function(){
 		content.siblings(".contents.expanded").removeClass("expanded").slideUp();
 		content.slideDown().addClass("expanded");
 	}
+});
+
+$("a#recent").click(function(){ $("div.recent_div ul").toggle(); });
+$("a#recent").hover(function(){ $("div.recent_div ul").show(); }, function(){});
+$("div.recent_div ul li a").live("click", function(){
+	loadArticle($(this));
+	$(this).parent().remove();
+	$("div.recent_div ul").hide();
+});
+
+$("#wraper2 div.header > a.close").live("click", function(){
+	var parent = $(this).parent();
+	$("div.recent_div ul").prepend($("<li></li>").append(parent.data("a")));
+	if ($("div.recent_div ul").children().length > 20) $("div.recent_div_div ul li:last").remove();
 });
 
 $("div.header > a.close").live("click", function(){
@@ -445,5 +479,18 @@ $("#wraper2 a").live("click", function(e){
 	e.preventDefault();
 
 });
+
+/*$(document.documentElement).live("keyup", function(event){
+	// page down
+	if (event.keyCode == 34) {
+		$("#wraper2 .expanded").find("a:contains('下页')").eq(0).click();
+	}
+	
+	// page up
+	if (event.keyCode == 33) {
+		$("#wraper2 .expanded").find("a:contains('上页')").eq(0).click();
+	}
+});
+*/
 
 } // big function end
