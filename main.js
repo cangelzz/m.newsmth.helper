@@ -1,5 +1,9 @@
+var msmth = (function(){
+
+var installed = false;
+	
 // check if logged in
-if ($("form ul li.f").length == 1) {
+if ($("form ul li.f").length == 1 && !installed) {
 
 //add method
 $.fn.extend({
@@ -31,7 +35,7 @@ $.fn.extend({
 		return $(this).find("ul.list.sec li").find("div:first").each(function(){
 			var link = $(this).children("a");
 			var base = link.attr("href");
-    		var post = $(this).text().match(/\((\d+)\)/);
+    		var post = $(this).text().match(/\((\d+)\)$/);
     		if (post != null) {
     			var total = Math.ceil(post[1] / 10);
     			if (total > 1) {
@@ -127,7 +131,7 @@ var P_LOAD_ARTICLE = /#?\/(article|mail|refer)/;
 var P_ARTICLE = /\/article\/\w+\/\d+/; // loadable article pattern in wraper2
 var P_ARTICLE_ACTION = /\/(article|mail)\/\w+\/(post|send|forward)/;
 var P_LOAD_BOARD_IN_DIV = /\/board/;
-var P_LOAD_SPEC_IN_DIV = /\/(refer\/at|refer\/reply\/$|mail\/inbox\/$|mail\/outbox\/$|mail\/deleted\/$|hot\/)/;
+var P_LOAD_SPEC_IN_DIV = /\/(refer\/at|refer\/reply\/|refre\/reply\?|mail\/inbox\/|mail\/outbox\/|mail\/deleted\/|hot\/|hot\/\w+)$/;
 //var P_LOAD_SPEC = //;
 var recent_closed = [];
 
@@ -170,10 +174,10 @@ function updateLatest() {
 
 $("div#bigpage").after("<div id='favor'>Loading ...</div>")
 .prepend("<div class='tools'></div>").find("div.tools")
-.append("<div class='recent_div'><a href='javascript:void(0)' id='recent'>最近关闭</a><ul></ul></div> ")
-.append("<label>打开版面</label><input type='text' id='jumpboard' /> ")
-.append("<label>定时更新</label><input id='time_update' type='checkbox' name='time_update' /> ")
-.append("<a class='close_all' href='javascript:void(0)' container='#wraper2'>关闭所有帖子</a><a class='close_all' href='javascript:void(0)' container='#wraper'>关闭所有版面</a>");
+.append("<div class='recent_div tool'><a href='javascript:void(0)' id='recent'>最近关闭</a><ul></ul></div> ")
+.append("<div class='tool'><label>打开版面</label><input type='text' id='jumpboard' /></div>")
+.append("<div class='tool'><label>定时更新</label><input id='time_update' type='checkbox' name='time_update' /></div>")
+.append("<div class='tool'><a class='close_all' href='javascript:void(0)' container='#wraper2'>关闭所有帖子</a><a class='close_all' href='javascript:void(0)' container='#wraper'>关闭所有版面</a></div>");
 
 $("#time_update").change(function(){
 	if (this.checked) {
@@ -240,11 +244,15 @@ function loadSpecial(a) {
 	var board = link.match(/\/(\w+)?/)[1];
 	if (board == undefined) board = "首页";
 	var board_text = a.text();
+	var page_num = "最新";
 	var head = $("<div class='header loading'></div>")
 		.attr("board", board)
+		.data("link", link)
+		.addClass("special")
 		.append("<a class='close' href='javascript:void(0)'>关闭</a>")
 		.append("<a class='toggle' href='javascript:void(0)'>" + board_text + "</a>")
 		.append("<span class='tip'> ...</span>")
+		.append("<a class='page_num' href='javascript:void(0)'>" + page_num + "</a>")
 		.appendTo($("#wraper"))
 		.after("<div class='contents loading'></div>");
 	$("#wraper").reset_maxheight();
@@ -262,7 +270,11 @@ function loadSpecialInDiv(a) {
 	var board = link.match(/\/(\w+)?/)[1];
 	if (board == undefined) board = "首页";
 	var board_text = a.text();
-	var head = $(a).parents("div.contents").addClass("loading").prev().addClass("loading");
+	var result = link.match(/\?p=(\d+)/);
+	var page_num;
+	if (result) page_num = result[1]; else page_num = undefined;
+	if (page_num == undefined || page_num == "1") page_num = "最新";
+	var head = $(a).parents("div.contents").addClass("loading").prev().addClass("loading").data("link", link);
 	$.ajax({ url: link, context: head,
 		success: function(result){
 			head.children("a.toggle").text(board_text);
@@ -306,6 +318,16 @@ function loadBoardInDiv(a) {
 	$.ajax({ url: link, context: head,
 		success: function(result){
 			head.find("a.page_num").text(page_num);
+			$(this).removeClass("loading")
+				.next().empty().append($(result).format_subjects()).removeClass("loading").check_to_expand();
+		}
+	});
+}
+
+function refreshSpecial(head) {
+	head.addClass("loading").next().addClass("loading");
+	$.ajax({ url: head.data("link"), context: head,
+		success: function(result){
 			$(this).removeClass("loading")
 				.next().empty().append($(result).format_subjects()).removeClass("loading").check_to_expand();
 		}
@@ -384,7 +406,13 @@ function loadArticleInDiv(a) {
 
 // reload board
 $("#wraper a.page_num").live("click", function(){
-	refreshBoard($(this).parent());
+	var header = $(this).parent();
+	if (header.hasClass("special")){
+		refreshSpecial(header);
+	}
+	else {
+		refreshBoard($(this).parent());
+	}
 });
 
 $("#wraper2 a.page_num").live("click", function(){
@@ -402,8 +430,8 @@ $("div.header").live("toggle", function(){
 	}
 });
 
-$("a#recent").click(function(){ $("div.recent_div ul").toggle(); });
-$("a#recent").hover(function(){ $("div.recent_div ul").show(); }, function(){});
+$("a#recent").click(function(){ $("div.recent_div ul").slideToggle(); });
+$("a#recent").hover(function(){ $("div.recent_div ul").slideDown(); }, function(){});
 $("div.recent_div ul li a").live("click", function(){
 	loadArticle($(this));
 	$(this).parent().remove();
@@ -413,7 +441,7 @@ $("div.recent_div ul li a").live("click", function(){
 $("#wraper2 div.header > a.close").live("click", function(){
 	var parent = $(this).parent();
 	$("div.recent_div ul").prepend($("<li></li>").append(parent.data("a")));
-	if ($("div.recent_div ul").children().length > 20) $("div.recent_div_div ul li:last").remove();
+	if ($("div.recent_div ul").children("li").length > 20) $("div.recent_div ul li:last").remove();
 });
 
 $("div.header > a.close").live("click", function(){
@@ -443,6 +471,7 @@ $(".globalnav a").live("click", function(e){
 	if (href.match(/\/(\w+)?/)) loadSpecial($(this));
 });
 
+$("#favor").dblclick(function(){ $(this).slideUp(); });
 
 $("#favor a").live("click", function(e){
 	e.preventDefault();
@@ -494,3 +523,7 @@ $("#wraper2 a").live("click", function(e){
 */
 
 } // big function end
+
+installed = true;
+
+})();
