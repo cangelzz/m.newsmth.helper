@@ -160,6 +160,7 @@ function resize() {
   //$("div#wraper2").height($(window).height() - ROW_HEIGHT);
   $("div#bigpage").height($(window).height() - 10);
   $("div.container").height($("div#bigpage").height() - MENU_HEIGHT).reset_maxheight();
+  $("#favor").offset({left: $("a[href*=favor]").offset().left });
 }
 
 var time_update = 0;
@@ -193,8 +194,6 @@ $("#jumpboard").keypress(function(event){
   }
 });
 
-
-resize();
 // add resize listener
 $(window).resize(resize);
 
@@ -542,3 +541,4 @@ $("#wraper2").on("click", "a", function(e){
 
 installed = true;
 $("body").fadeIn();
+resize();

@@ -11,8 +11,10 @@ body { font-family: Helvetica, "Segoe UI", "宋体"; font-size: small !important
 .hla { background-color: white !important; }
 .list li { padding: 5px 3px 5px 3px !important; }
 .list li div:first-child { margin-bottom: 2px; }
-#wraper .list li div:last-child { font-size: small !important; color: #555 !important; opacity: .6 }
 .list li div:last-child a { text-decoration:underline; }
+#wraper .list li div:last-child { font-size: small !important; color: #555 !important; opacity: .6 }
+#wraper2 .list li { border-top: 0px !important; }
+
 a { color: #333 !important; }
 a.top { color: crimson !important; }
 a:hover { color: #0064AF !important; }
@@ -23,7 +25,6 @@ a:hover { color: #0064AF !important; }
   position: absolute;
   width: 450px;
   top: 26px;
-  left: 130px;
   background-color: white;
   padding: 10px;
   box-shadow: 2px 2px 5px #555;
