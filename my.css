@@ -58,9 +58,9 @@ span.plant { padding-left: 2px; padding-right:1px;}
   overflow-y: hidden;
 }
 #bigpage {
-  max-width: 1024px;
+  max-width: 1200px;
   overflow-y: hidden;
-  margin-left: 20px;
+  margin: 0 auto;
   background-color: white;
   box-shadow: 0 0 10px black;
   padding: 5px 5px;
