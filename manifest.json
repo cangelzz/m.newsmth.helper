@@ -7,18 +7,18 @@
   "icons": { "128": "icon.png" },
   "homepage_url": "https://github.com/cangelzz/m.newsmth.helper",
   "permissions": [
-    "http://m.newsmth.net/"
+    "http://m.newsmth.net/", "storage"
   ],
   "content_scripts": [
     {
        "matches": ["http://m.newsmth.net/*"],
-       "js": ["jquery.js", "remove_baidu.js"],
+       "js": ["jquery-2.1.1.min.js", "remove_baidu.js"],
        "css": ["my.css"],
        "run_at": "document_start"
     },
     {
        "matches": ["http://m.newsmth.net/*"],
-       "js": ["jquery.js", "main.js"],
+       "js": ["jquery-2.1.1.min.js", "main.js"],
        "css": ["my.css"],
        "run_at": "document_end"
     }

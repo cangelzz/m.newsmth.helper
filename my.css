@@ -1,5 +1,13 @@
 /* Global */
-body { font-family: Helvetica, "Segoe UI", "宋体"; font-size: small !important;}
+body { font-family: Helvetica, "Segoe UI", "宋体"; font-size: small !important; background-color: #eee; display:none;}
+.menu { background-color: #22465E !important; color: #22465E !important}
+.menu a {
+  color: #eee !important;
+  padding: 0px 3px !important;
+}
+.menu a:hover {
+  color: white !important;
+}
 .hla { background-color: white !important; }
 .list li { padding: 5px 3px 5px 3px !important; }
 .list li div:first-child { margin-bottom: 2px; }
@@ -8,10 +16,20 @@ body { font-family: Helvetica, "Segoe UI", "宋体"; font-size: small !important
 a { color: #333 !important; }
 a.top { color: crimson !important; }
 a:hover { color: #0064AF !important; }
-a:visited { color: coral !important; }
-#favor { display: none; position: absolute; width: 500px; top:100px; left: 10px; background-color: white;  padding: 10px; box-shadow: 2px 2px 5px #555; border:1px solid #ddd }
-#favor ul { overflow:hidden; }
-#favor ul li { float:left;}
+#wraper a:visited, #wraper2 a:visited { color: coral !important; }
+#favor {
+  display: none;
+  border: 1px solid #22465E;
+  position: absolute;
+  width: 450px;
+  top: 26px;
+  left: 130px;
+  background-color: white;
+  padding: 10px;
+  box-shadow: 2px 2px 5px #555;
+}
+#favor ul { -webkit-column-count: 2; }
+#favor ul li { white-space: nowrap; width: 200px; background-color: white;}
 #favor ul li:hover { background-color: #ddd }
 div.loading { opacity: .5 }
 span.tip { display: none; margin-left: 4px; color:white}
@@ -21,35 +39,65 @@ div.recent_div ul { position: absolute; color: black; display: none; background:
 	border-left: 1px solid #AAA;
 	border-right: 1px solid #AAA;
 	border-bottom: 1px solid #AAA;
-box-shadow: 3px 3px 5px rgba(50, 50, 50, 0.75);
+  box-shadow: 3px 3px 5px rgba(50, 50, 50, 0.75);
 }
 div.recent_div ul li a { color: #000 !important }
 div.recent_div ul li:hover { background-color: #eee; }
-a#recent { color:white !important; display:inline-block; margin-bottom:3px; }
 
 a.page_last { float:right; }
 a.page { padding-left: 1px; padding-right: 1px;}
 span.plant { padding-left: 2px; padding-right:1px;}
-#bigpage div#wraper {float:left; width: 40%;overflow-y: hidden;}
-#bigpage div#wraper2 {overflow-y: hidden;}
-#bigpage { overflow-y: hidden; }
 
-#wraper div.header { background-color: rgb(233,131,0)}
-#wraper2 div.header { background-color: rgb(242,182,0)}
-div.header { padding: 2px; margin-bottom:1px}
+#bigpage #wraper {
+  float: left;
+  width: 40%;
+  overflow-y: hidden;
+  margin-right:2px;
+}
+#bigpage #wraper2 {
+  overflow-y: hidden;
+}
+#bigpage {
+  max-width: 1024px;
+  overflow-y: hidden;
+  margin-left: 20px;
+  background-color: white;
+  box-shadow: 0 0 10px black;
+  padding: 5px 5px;
+}
+
+#wraper div.header {
+  /*border-bottom: 1px solid #53bbd4;*/
+  background-color: #53bbd4;
+}
+#wraper2 div.header { background-color: #57c1b4}
+div.header {
+  padding: 2px;
+  margin-bottom:1px;
+}
+
 div.contents { overflow-y: auto; display:none;
 }
 
-.contents::-webkit-scrollbar { width: 0px; }
+
+div.contents::-webkit-scrollbar { width: 0px;}
+div.contents::-webkit-scrollbar-track {
+  /*box-shadow: inset 0 0 3px rgba(0,0,0,0.3);*/
+  background-color: white;
+}
+div.contents::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 3px rgba(0,0,0,.5);
+}
+
 
 a.close { float:left; margin-right: 4px; }
 a.close:link { color: #efefef !important }
 a.close:hover { color: crimson !important; }
 a.close_all { margin: 0px 2px; }
-a.close_all:link { color: white !important }
-a.close_all:hover { color: crimson !important; }
-div.tools { position:absolute; right:0px; padding: 2px; color: white; }
+div.tools { float: right; padding: 2px;}
 div.tools div.tool { display: inline-block; margin-right: 3px; }
+div.tools, div.tools a { color: #eee !important; }
+div.tools a:hover { color: white !important; }
 a.page_num { float:right; margin-right:4px; background-color:white; min-width:20px;text-align:center; padding:0px 2px; }
 a.toggle:link { color:white !important  }
 a.toggle:hover { color: rgb(205,0,60) !important; }

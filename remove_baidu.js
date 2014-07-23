@@ -11,4 +11,3 @@ function doBeforeLoad(event){
 }
 
 document.addEventListener('beforeload', doBeforeLoad , true);
-
