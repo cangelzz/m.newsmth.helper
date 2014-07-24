@@ -36,13 +36,17 @@ div.loading { opacity: .5 }
 span.tip { display: none; margin-left: 4px; color:white}
 div.loading span.tip { display: inline; }
 div.recent_div { display: inline-block; }
-div.recent_div ul { position: absolute; color: black; display: none; background: #FFF;
-	border-left: 1px solid #AAA;
-	border-right: 1px solid #AAA;
-	border-bottom: 1px solid #AAA;
-  box-shadow: 3px 3px 5px rgba(50, 50, 50, 0.75);
+div.recent_div ul { 
+  position: absolute;
+  display: none;
+  background: #FFF;
+  border: 1px solid #22465E;
+  box-shadow: 2px 2px 5px #555;
+  margin-top: 3px;
+  padding: 5px;
 }
-div.recent_div ul li a { color: #000 !important }
+div.recent_div ul li a { color: #333 !important; }
+div.recent_div ul li a:hover { color: #0064AF !important; }
 div.recent_div ul li:hover { background-color: #eee; }
 
 a.page_last { float:right; }

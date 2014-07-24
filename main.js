@@ -166,10 +166,15 @@ function resize() {
 var time_update = 0;
 
 function updateLatest() {
-  $("a.page_num").each(function(){
-    if ($(this).text() == "最新") refresh_board($(this).parent());
-    if ($(this).text() == "尾页") refres_article($(this).parent());
+  //$("a.page_num").each(function(){
+//    if ($(this).text() == "最新") refresh_board($(this).parent());
+    //if ($(this).text() == "尾页") refres_article($(this).parent());
+  //});
+  $("#wraper a.page_num").each(function(i, v){
+    var head = $(this).parent();
+    setTimeout(function(){ refresh_board(head); }, 3000 + 3000 * i);
   });
+  
 }
 
 $("div#bigpage").after("<div id='favor'>Loading ...</div>")
@@ -442,12 +447,16 @@ $(document).on("toggle", "div.header", function(){
   }
 });
 
-$("a#recent").click(function(){ $("div.recent_div ul").slideToggle(); });
-$("a#recent").hover(function(){ $("div.recent_div ul").slideDown(); }, function(){});
+$("a#recent").click(function(){ $("div.recent_div ul").fadeToggle(); });
+$("a#recent").hover(function(){
+  if ($("div.recent_div ul li").length > 0) {
+    $("div.recent_div ul").fadeIn();
+  }
+}, function(){});
 $(document).on("click", "div.recent_div ul li a", function(){
   load_article($(this));
   $(this).parent().remove();
-  $("div.recent_div ul").hide();
+  $("div.recent_div ul").fadeOut();
 });
 
 $("#wraper2").on("click", "div.header > a.close", function(){
@@ -536,6 +545,12 @@ $("#wraper2").on("click", "a", function(e){
   e.preventDefault();
 
 });
+
+
+$("#wraper").on("dblclick", "div.contents", function(){
+  refreshBoard($(this).prev());
+});
+
 
 } // big function end
 
