@@ -195,7 +195,10 @@ $("#time_update").change(function(){
 
 $("#jumpboard").keypress(function(event){
   if (event.keyCode == '13') {
-    load_board($("<a href='http://m.newsmth.net/board/"+ $(this).val() +"'>"+ $(this).val() +"</a>"));
+    load_board($("<a>", { 
+      href: "http://m.newsmth.net/board/"+ $(this).val(),
+      text: "(" + $(this).val() + ")"
+    }));
   }
 });
 
