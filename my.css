@@ -31,6 +31,7 @@ a:hover { color: #0064AF !important; }
 }
 #favor ul { -webkit-column-count: 2; }
 #favor ul li { white-space: nowrap; width: 200px; background-color: white;}
+#favor ul li a { display: block;  }
 #favor ul li:hover { background-color: #ddd }
 div.loading { opacity: .5 }
 span.tip { display: none; margin-left: 4px; color:white}
@@ -45,7 +46,7 @@ div.recent_div ul {
   margin-top: 3px;
   padding: 5px;
 }
-div.recent_div ul li a { color: #333 !important; }
+div.recent_div ul li a { color: #333 !important; display: block; }
 div.recent_div ul li a:hover { color: #0064AF !important; }
 div.recent_div ul li:hover { background-color: #eee; }
 
