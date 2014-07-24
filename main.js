@@ -546,7 +546,6 @@ $("#wraper2").on("click", "a", function(e){
 
 });
 
-
 $("#wraper").on("dblclick", "div.contents", function(){
   refreshBoard($(this).prev());
 });
