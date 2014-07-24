@@ -550,8 +550,8 @@ $("#wraper").on("dblclick", "div.contents", function(){
   refreshBoard($(this).prev());
 });
 
-resize();
 } // big function end
 
 installed = true;
 $("body").fadeIn();
+if (installed) resize();
