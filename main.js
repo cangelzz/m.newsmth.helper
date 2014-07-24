@@ -537,8 +537,9 @@ $("#wraper2").on("click", "a", function(e){
 
 });
 
+resize();
+
 } // big function end
 
 installed = true;
 $("body").fadeIn();
-resize();
