@@ -25,6 +25,7 @@ a:hover { color: #0064AF !important; }
   position: absolute;
   width: 450px;
   top: 26px;
+  left: 110px;
   background-color: white;
   padding: 10px;
   box-shadow: 2px 2px 5px #555;
@@ -64,6 +65,7 @@ span.plant { padding-left: 2px; padding-right:1px;}
   overflow-y: hidden;
 }
 #bigpage {
+  position: relative;
   max-width: 1200px;
   overflow-y: hidden;
   margin: 0 auto;

@@ -160,7 +160,7 @@ function resize() {
   //$("div#wraper2").height($(window).height() - ROW_HEIGHT);
   $("div#bigpage").height($(window).height() - 10);
   $("div.container").height($("div#bigpage").height() - MENU_HEIGHT).reset_maxheight();
-  $("#favor").offset({left: $("a[href*=favor]").offset().left });
+  //$("#favor").offset({left: $("a[href*=favor]").offset().left });
 }
 
 var time_update = 0;
@@ -177,7 +177,7 @@ function updateLatest() {
   
 }
 
-$("div#bigpage").after("<div id='favor'>Loading ...</div>")
+$("div#bigpage").append("<div id='favor'>Loading ...</div>")
 .prepend("<div class='tools'></div>").find("div.tools")
 .append("<div class='recent_div tool'><a href='javascript:void(0)' id='recent'>最近关闭</a><ul></ul></div> ")
 .append("<div class='tool'><label>打开版面</label><input type='text' id='jumpboard' /></div>")
