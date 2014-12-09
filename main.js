@@ -179,10 +179,11 @@ function updateLatest() {
 
 $("div#bigpage").append("<div id='favor'>Loading ...</div>")
 .prepend("<div class='tools'></div>").find("div.tools")
-.append("<div class='recent_div tool'><a href='javascript:void(0)' id='recent'>最近关闭</a><ul></ul></div> ")
-.append("<div class='tool'><label>打开版面</label><input type='text' id='jumpboard' /></div>")
-.append("<div class='tool'><label>定时更新</label><input id='time_update' type='checkbox' name='time_update' /></div>")
-.append("<div class='tool'><a class='close_all' href='javascript:void(0)' container='#wraper2'>关闭所有帖子</a><a class='close_all' href='javascript:void(0)' container='#wraper'>关闭所有版面</a></div>");
+.append("|<div class='tool settings'><a href='javascript:void(0)' id='relogin'>登录</a><a href='javascript:void(0)' id='setting'>设定</a><div class='setting_panel'></div></div>")
+.append("|<div class='tool recent_div'><a href='javascript:void(0)' id='recent'>最近关闭</a><ul></ul></div> ")
+.append("|<div class='tool'><label>打开版面</label><input type='text' id='jumpboard' /></div>")
+.append("|<div class='tool'><label>定时更新</label><input id='time_update' type='checkbox' name='time_update' /></div>")
+.append("|<div class='tool'><a class='close_all' href='javascript:void(0)' container='#wraper2'>关闭所有帖子</a><a class='close_all' href='javascript:void(0)' container='#wraper'>关闭所有版面</a></div>");
 
 $("#time_update").change(function(){
   if (this.checked) {
@@ -450,6 +451,26 @@ $(document).on("toggle", "div.header", function(){
   }
 });
 
+$("a#relogin").click(function(){
+  var $this = $(this);
+  $this.text("登录中...")
+  var u = localStorage.getItem("username");
+  var p = localStorage.getItem("password");
+  $.post("/user/login", {"id":u, "passwd":p}, function(h){
+    $(h).update_nav();
+    $this.text("登录")
+  });
+});
+$("a#setting").click(function(){
+  var div = $(this).next();
+  div.empty().append("<label>用户名</label><input type='text' id='setting_username' value='" + localStorage.getItem("username") + "'><br><br><label>密码</label><input type='password' value='"+ localStorage.getItem("password") +"' id='setting_password'><br><br><a href='javascript:void(0)' id='setting_save'>保存</a>").fadeIn();
+});
+
+$(document).on("click", "a#setting_save", function(){
+  localStorage.setItem("username", $("#setting_username").val());
+  localStorage.setItem("password", $("#setting_password").val());
+  $("div.setting_panel").fadeOut();
+});
 $("a#recent").click(function(){ $("div.recent_div ul").fadeToggle(); });
 $("a#recent").hover(function(){
   if ($("div.recent_div ul li").length > 0) {

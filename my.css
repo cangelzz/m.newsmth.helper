@@ -51,6 +51,27 @@ div.recent_div ul li a { color: #333 !important; display: block; }
 div.recent_div ul li a:hover { color: #0064AF !important; }
 div.recent_div ul li:hover { background-color: #eee; }
 
+div.setting_panel {
+  position: absolute;
+  display: none;
+  margin-top: 4px;
+  margin-left: -3px;
+  width: 150px;
+  padding:5px;
+  background: rgb(34, 70, 94)
+}
+
+div.setting_panel input {
+  width: 100px;
+}
+
+div.setting_panel label {
+  display: inline-block;
+  width: 40px;
+  color: #eee;
+}
+
+
 a.page_last { float:right; }
 a.page { padding-left: 1px; padding-right: 1px;}
 span.plant { padding-left: 2px; padding-right:1px;}
@@ -103,7 +124,8 @@ a.close:link { color: #efefef !important }
 a.close:hover { color: crimson !important; }
 a.close_all { margin: 0px 2px; }
 div.tools { float: right; padding: 2px;}
-div.tools div.tool { display: inline-block; margin-right: 3px; }
+div.tools div.tool { display: inline-block; padding: 0px 2px }
+div.tools div.tool > a { margin: 0px 2px }
 div.tools, div.tools a { color: #eee !important; }
 div.tools a:hover { color: white !important; }
 a.page_num { float:right; margin-right:4px; background-color:white; min-width:20px;text-align:center; padding:0px 2px; }
